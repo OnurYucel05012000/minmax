@@ -62,6 +62,7 @@ namespace ConsoleApp1
             //Bos yer varmi?
             //eger bos yer yoksa oyun berabere demek
             char a = Game.CheckBoard(board);
+            if(a =='*')return 0;
             if (a == 'O') return 1;
             else if (a == 'X') return -1;
             
