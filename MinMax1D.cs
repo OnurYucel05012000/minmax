@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,22 +26,19 @@ namespace ConsoleApp1
                     //RUN
                     board[i] = MaximumPlayer;
 
-                    if (Game.CheckBoard(board) == MaximumPlayer)
-                    {                        
-                        return i;                        
-                    }
-                    else
-                    {                         
+                    
+                                          
                         score = minimax(0, board, false);
                         if (score >= bestscore)
                         {
                             bestscore = score;
                             index = i;
                         }
-                    }
+                    
                     board[i] = 'a';
                 }
             }//for i end
+            
             return index;
         }//method end
     
@@ -60,23 +57,24 @@ namespace ConsoleApp1
         //True O false X olsun
         private int minimax(int depth,char[] board,bool siradaki)
         {
-            int bestscore=0, score;
+            int score;
 
             //Bos yer varmi?
             //eger bos yer yoksa oyun berabere demek
-
+            char a = Game.CheckBoard(board);
+            if (a == 'O') return 1;
+            else if (a == 'X') return -1;
+            
             if (siradaki)
             {
+                int bestscore = -1;
                 for (int i = 0; i < 9; i++)
                 {
                     //Bos yer yoksa devam et bul 
                     if (board[i] == 'a')
                     {
                             board[i] = 'O';
-                            if (Game.CheckBoard(board) == 'O')
-                            {
-                                return 1;
-                            }
+                            
                             score = minimax(++depth, board, false);
                             board[i] = 'a';
                             if (score > bestscore)
@@ -90,16 +88,14 @@ namespace ConsoleApp1
             }
             else
             {
+                int bestscore = 1;
                 for (int i = 0; i < 9; i++)
                 {
                     //Bos yer yoksa devam et bul 
                     if (board[i] == 'a')
                     {
-                        board[i] = 'X';
-                        if (Game.CheckBoard(board) == 'X')
-                        {
-                            return -1;
-                        }
+
+                        board[i] = 'X';                        
                         score = minimax(++depth, board, true);
                         board[i] = 'a';
 
