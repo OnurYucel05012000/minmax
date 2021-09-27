@@ -26,19 +26,30 @@ namespace ConsoleApp1
                     //RUN
                     board[i] = MaximumPlayer;
 
-                    
-                                          
+                    if (MaximumPlayer == 'O')
+                    {
                         score = minimax(0, board, false);
-                        if (score >= bestscore)
+                    }
+                    else
+                    {
+                        score = minimax(0, board, true);
+                    }
+
+                    if (score >= bestscore)
                         {
                             bestscore = score;
                             index = i;
+
+                        
+                        if (bestscore == 1) return index;
                         }
                     
                     board[i] = 'a';
                 }
             }//for i end
+
             
+
             return index;
         }//method end
     
@@ -62,10 +73,11 @@ namespace ConsoleApp1
             //Bos yer varmi?
             //eger bos yer yoksa oyun berabere demek
             char a = Game.CheckBoard(board);
-            if(a =='*')return 0;
+            
             if (a == 'O') return 1;
             else if (a == 'X') return -1;
-            
+            if (checkgame(board)) return 0;
+
             if (siradaki)
             {
                 int bestscore = -1;
