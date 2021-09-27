@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +18,7 @@ namespace ConsoleApp1
 
         static char[] Board = new char[9];
         bool sira = true;
-        int test = 0;
+        int Xwin, Owin;
 
         public Game()
         {          
@@ -28,35 +28,45 @@ namespace ConsoleApp1
         {
             Clear();
         }
-
+        public int getOwin()
+        {
+            return Owin;
+        }
+        public int getXwin()
+        {
+            return Xwin;
+        }
         public void Custom_game()
         {
-            Board[0] = 'O'; Board[1] = 'O'; Board[2] = 'X';
-            Board[3] = 'a'; Board[4] = 'a'; Board[5] = 'O';
-            Board[6] = 'a'; Board[7] = 'X'; Board[8] = 'X';
+            Board[0] = 'X'; Board[1] = 'O'; Board[2] = 'X';
+            Board[3] = 'O'; Board[4] = 'a'; Board[5] = 'a';
+            Board[6] = 'a'; Board[7] = 'a'; Board[8] = 'O';
             
         }
         public void Start()
         {
-            int i = 0;
-            Custom_game();
+            int i = -1;
+            Clear();
+           // Custom_game();
             while (i < 9)
             {
 
                 Draw();
-                input();
+                
                 if (CheckBoard(Board) == 'X')
                 {
+                    Xwin++;
                     Console.WriteLine("X kazandi");
                     break;
                 }else if (CheckBoard(Board) == 'O')
                 {
+                    Owin++;
                     Console.WriteLine("O kazandi");
                     break;
                 }
                 if (!CheckGameState()) { break;}
-                
-                
+                input();
+
                 i++;
             }
             Draw();
@@ -86,23 +96,28 @@ namespace ConsoleApp1
         }
         public void input()
         {
-            short i;
+            int i;
 
             if (sira)
             {
-                
-                
-                    Console.WriteLine("X player");
-
-                    //X player i,j input
-                    Console.WriteLine("i");
-                    i = Convert.ToInt16(Console.ReadLine());
 
 
-                
+                Console.WriteLine("X player");
 
-                    Board[i] = 'X';
-                    sira = false;
+                //X player i,j input
+                //Console.WriteLine("i");
+                //i = Convert.ToInt16(Console.ReadLine());
+
+                //i = Convert.ToInt16(randomplayer());
+
+                MinMax1D mM = new MinMax1D();
+                i = mM.Run(0, Board, 'X');
+                Board[i] = 'X';
+                //Console.WriteLine("O played at : " + index);
+
+
+                Board[i] = 'X';
+                sira = false;
             }
             else
             {
@@ -116,14 +131,32 @@ namespace ConsoleApp1
                 */
 
                 MinMax1D mM = new MinMax1D();
-                int index = mM.Run(0, Board, 'O');
-                Board[index] = 'O';
-                Console.WriteLine("O played at : " + index);
+                i = mM.Run(0, Board, 'O');
+
+                // i = Convert.ToInt16(randomplayer());
+
+                Board[i] = 'O';
+                Console.WriteLine("O played at : " + i);
 
                 sira = true;
             }
-            
-        }//input
+
+        }
+        
+        //input
+        private int randomplayer()
+        {
+            Random rnd = new Random();
+            int r = rnd.Next(9);
+            while (true)
+            {
+                
+                if (Board[r] == 'a') break;
+                r = rnd.Next(9);
+
+            }
+            return r;
+        }
         public static bool CheckGameState()
         {
             for(int i = 0; i < 9; i++)
